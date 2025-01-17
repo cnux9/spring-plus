@@ -2,6 +2,7 @@ package org.example.expert.domain.auth.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.config.JwtUtil;
@@ -27,11 +28,11 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signin")
-    public SigninResponse signin(@Valid @RequestBody SigninRequest signinRequest, HttpServletResponse response) {
+    public SigninResponse signin(@Valid @RequestBody SigninRequest signinRequest, HttpSession session) {
         SigninResponse responseDto = authService.signin(signinRequest);
 
-        Cookie cookie = new Cookie("Authorization", responseDto.getBearerToken().substring(8));
-        response.addCookie(cookie);
+//        Cookie cookie = new Cookie("Authorization", jwtUtil.substringToken(responseDto.getBearerToken()));
+//        session.setAttribute(cookie);
         return responseDto;
     }
 }

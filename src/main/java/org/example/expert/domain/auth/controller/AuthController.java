@@ -28,11 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signin")
-    public SigninResponse signin(@Valid @RequestBody SigninRequest signinRequest, HttpSession session) {
-        SigninResponse responseDto = authService.signin(signinRequest);
-
-//        Cookie cookie = new Cookie("Authorization", jwtUtil.substringToken(responseDto.getBearerToken()));
-//        session.setAttribute(cookie);
-        return responseDto;
+    public SigninResponse signin(@Valid @RequestBody SigninRequest signinRequest) {
+        return authService.signin(signinRequest);
     }
 }

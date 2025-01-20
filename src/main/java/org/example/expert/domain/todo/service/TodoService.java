@@ -8,6 +8,8 @@ import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
 import org.example.expert.domain.todo.entity.Todo;
+import org.example.expert.domain.todo.repository.TodoQueryDslRepository;
+import org.example.expert.domain.todo.repository.TodoQueryDslRepositoryImpl;
 import org.example.expert.domain.todo.repository.TodoRepository;
 import org.example.expert.domain.user.dto.response.UserResponse;
 import org.example.expert.domain.user.entity.User;
@@ -24,6 +26,7 @@ import java.time.LocalDate;
 public class TodoService {
 
     private final TodoRepository todoRepository;
+    private final TodoQueryDslRepository todoQueryDslRepository;
     private final WeatherClient weatherClient;
 
     @Transactional
@@ -70,7 +73,8 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public TodoResponse getTodo(long todoId) {
-        Todo todo = todoRepository.findByIdWithUser(todoId)
+//        Todo todo = todoRepository.findByIdWithUser(todoId)
+        Todo todo = todoQueryDslRepository.findByIdWithUser(todoId)
                 .orElseThrow(() -> new InvalidRequestException("Todo not found"));
 
         User user = todo.getUser();

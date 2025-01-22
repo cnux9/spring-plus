@@ -5,20 +5,27 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.ServerException;
 import org.example.expert.domain.user.enums.UserRole;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
-@Slf4j(topic = "JwtUtil")
 @Component
-public class JwtUtil {
+public class JwtTokenProvider {
 
     private static final String BEARER_PREFIX = "Bearer ";
     private static final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
@@ -62,5 +69,32 @@ public class JwtUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public UsernamePasswordAuthenticationToken getAuthentication(String jwt) {
+        Claims claims = extractClaims(jwt);
+
+        Long id = Long.parseLong(claims.getSubject());
+        String email = claims.get("email", String.class);
+        UserRole userRole = UserRole.of(claims.get("userRole", String.class));
+        String nickname = claims.get("nickname", String.class);
+
+        AuthUser authUser = new AuthUser(
+                id,
+                email,
+                userRole,
+                nickname
+        );
+
+        List<GrantedAuthority> authorities = List.of(userRole.toGrantedAuthority());
+
+        UserDetails userDetails = User.withUsername(email)
+                .password("")
+                .authorities(authorities)
+                .build();
+
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+        auth.setDetails(authUser);
+        return auth;
     }
 }

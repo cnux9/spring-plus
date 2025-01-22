@@ -1,11 +1,8 @@
 package org.example.expert.domain.auth.controller;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.expert.config.JwtUtil;
+import org.example.expert.config.JwtTokenProvider;
 import org.example.expert.domain.auth.dto.request.SigninRequest;
 import org.example.expert.domain.auth.dto.request.SignupRequest;
 import org.example.expert.domain.auth.dto.response.SigninResponse;
@@ -20,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    private final JwtUtil jwtUtil;
+    private final JwtTokenProvider jwtUtil;
 
     @PostMapping("/auth/signup")
     public SignupResponse signup(@Valid @RequestBody SignupRequest signupRequest) {

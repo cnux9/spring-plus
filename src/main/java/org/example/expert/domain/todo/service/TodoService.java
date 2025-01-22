@@ -56,8 +56,6 @@ public class TodoService {
     public Page<TodoResponse> getTodos(int page, int size, String weather, LocalDate startDate, LocalDate endDate) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
-//        Page<Todo> todos = todoRepository.findAllByOrderByModifiedAtDesc(pageable);
-//        Page<Todo> todos = todoRepository.findAllByWeatherAndDateOrderByModifiedAtDesc(pageable);
         Page<Todo> todos = todoRepository.findAllByWeatherAndDate(pageable, weather, startDate, endDate);
 
         return todos.map(todo -> new TodoResponse(

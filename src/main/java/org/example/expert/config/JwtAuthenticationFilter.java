@@ -77,9 +77,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         return false;
     }
-
-//    @Override
-//    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-//        ObjectMapper
-//    }
 }

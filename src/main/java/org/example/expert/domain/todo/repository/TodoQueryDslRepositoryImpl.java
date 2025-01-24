@@ -47,9 +47,9 @@ public class TodoQueryDslRepositoryImpl implements TodoQueryDslRepository {
                                 manager.countDistinct().as("managerCount"),
                                 comment.countDistinct().as("commentCount")
                         ))
-                        .join(manager).fetchJoin()
-                        .join(comment).fetchJoin()
                         .from(todo)
+                        .leftJoin(manager)
+                        .leftJoin(comment)
                         .where(containsTitle(title), createdAtOrAfter(startDate), createdAtOrBefore(endDate), containsUserNickname(nickname))
                         .groupBy(todo.id)
                         .offset(pageable.getOffset())
@@ -63,7 +63,6 @@ public class TodoQueryDslRepositoryImpl implements TodoQueryDslRepository {
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, total);
-//        return new PageImpl<>(new ArrayList<>(), pageable, 0L);
     }
 
     private BooleanExpression containsTitle(String title) {

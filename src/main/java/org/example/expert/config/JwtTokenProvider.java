@@ -1,6 +1,7 @@
 package org.example.expert.config;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -42,6 +43,7 @@ public class JwtTokenProvider {
     }
 
     public String createToken(Long userId, String email, UserRole userRole, String nickname) {
+
         Date date = new Date();
 
         return BEARER_PREFIX +

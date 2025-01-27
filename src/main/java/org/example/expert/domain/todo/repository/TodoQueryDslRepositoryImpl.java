@@ -52,6 +52,7 @@ public class TodoQueryDslRepositoryImpl implements TodoQueryDslRepository {
                         .leftJoin(todo.comments, comment)
                         .where(containsTitle(title), createdAtOrAfter(startDate), createdAtOrBefore(endDate), containsUserNickname(nickname))
                         .groupBy(todo.id)
+                        .orderBy(todo.createdAt.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
                         .fetch();

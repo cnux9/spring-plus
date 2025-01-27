@@ -45,6 +45,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
             return null;
         }
 
+
         Object details = auth.getDetails();
         if (details instanceof AuthUser) {
             return details;

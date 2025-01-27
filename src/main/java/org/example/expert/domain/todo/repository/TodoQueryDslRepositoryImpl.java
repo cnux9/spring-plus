@@ -42,14 +42,14 @@ public class TodoQueryDslRepositoryImpl implements TodoQueryDslRepository {
     public Page<TodoSearchResponse> searchTodo(Pageable pageable, String title, String nickname, LocalDate startDate, LocalDate endDate) {
         List<TodoSearchResponse> content =
                 jpaQueryFactory
-                        .select(Projections.bean(TodoSearchResponse.class,
+                        .select(Projections.constructor(TodoSearchResponse.class,
                                 todo.title,
                                 manager.countDistinct().as("managerCount"),
                                 comment.countDistinct().as("commentCount")
                         ))
                         .from(todo)
-                        .leftJoin(manager)
-                        .leftJoin(comment)
+                        .leftJoin(todo.managers, manager)
+                        .leftJoin(todo.comments, comment)
                         .where(containsTitle(title), createdAtOrAfter(startDate), createdAtOrBefore(endDate), containsUserNickname(nickname))
                         .groupBy(todo.id)
                         .offset(pageable.getOffset())

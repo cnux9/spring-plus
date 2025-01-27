@@ -25,7 +25,6 @@ public class TodoController {
     @PostMapping("/todos")
     public ResponseEntity<TodoSaveResponse> saveTodo(
             HttpServletRequest request,
-            @Authori
             @Auth AuthUser authUser,
             @Valid @RequestBody TodoSaveRequest todoSaveRequest
     ) {
@@ -50,12 +49,12 @@ public class TodoController {
 
     @GetMapping("/todos/search")
     public ResponseEntity<Page<TodoSearchResponse>> searchTodos(
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(value = "title") String title,
-            @RequestParam(value = "name") String nickname,
-            @RequestParam(value = "start") LocalDate startDate,
-            @RequestParam(value = "end") LocalDate endDate
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "name", required = false) String nickname,
+            @RequestParam(value = "start", required = false) LocalDate startDate,
+            @RequestParam(value = "end", required = false) LocalDate endDate
     ) {
         return ResponseEntity.ok(todoService.searchTodos(page, size, title, nickname, startDate, endDate));
     }

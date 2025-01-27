@@ -90,7 +90,7 @@ public class TodoService {
     }
 
     public Page<TodoSearchResponse> searchTodos(int page, int size, String title, String nickname, LocalDate startDate, LocalDate endDate) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
         return todoQueryDslRepository.searchTodo(pageable, title, nickname, startDate, endDate);
     }
 }

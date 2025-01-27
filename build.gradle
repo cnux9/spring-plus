@@ -62,7 +62,7 @@ tasks.named('test') {
 }
 
 //Querydsl Q Class 생성 위치
-def generated = 'src/main/generated'
+def generated = 'build/generated/querydsl'
 
 //Querydsl Q Class 생성 위치 지정
 tasks.withType(JavaCompile) {
